@@ -3,6 +3,6 @@ import { ICreateUser } from "../userCases/CreateUser/CreateUserDTO";
 
 export interface IUsersRepository {
     findByEmail(email: string): Promise<User>;
-    save(user: User): Promise<User>;
-    create(user: ICreateUser): Promise<User>;
+    salvar(user: User): Promise<User>;
+    execute(user: ICreateUser): Promise<User>;
 }

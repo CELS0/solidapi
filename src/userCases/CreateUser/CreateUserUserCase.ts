@@ -14,21 +14,20 @@ export class CreateUserUserCase {
         if (UserExist) {
             return UserExist;
         }
-        const user = await this.userRepository.create(data);
-        await this.userRepository.save(user);
-
+        const user = await this.userRepository.execute(data);
+        await this.userRepository.salvar(user);
+        
         await this.mailProvider.sendMail({
             to: {
-                name: user.name,
-                email: user.email,
+              name: data.name,
+              email: data.email,
             },
             from: {
-                name: "solid",
-                email: "solid@gmail.com",
+              name: 'Equipe do Meu App',
+              email: 'equipe@meuapp.com',
             },
-            subject: "Create User",
-            body: "<p>Conceitos do solid</p>"
-        })
-        return user;
-    }
+            subject: 'Seja bem-vindo à plataforma',
+            body: '<p>Você já pode fazer login em nossa plataforma.</p>'
+          })
+        }
 }

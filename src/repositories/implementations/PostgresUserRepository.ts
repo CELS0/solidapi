@@ -1,23 +1,22 @@
-import { getRepository, Repository } from "typeorm";
+import { EntityRepository, getCustomRepository, Repository } from "typeorm";
 import { User } from "../../entities/user";
 import { IUsersRepository } from "../IUsersRepository";
+@EntityRepository(User)
+export class PostgresUserRepository extends Repository<User>  implements IUsersRepository {
 
-export class PostgresUserRepository implements IUsersRepository {
-    private repository: Repository<User>;
-
-    constructor() {
-        this.repository = getRepository(User, "localhost");
-    }
-    async create(data: User): Promise<User> {
-        const user = this.repository.create(data);
+    async execute(data: User): Promise<User> {
+        const repository = getCustomRepository(PostgresUserRepository)
+        const user = repository.create(data)
         return user;
     }
     async findByEmail(email: string): Promise<User> {
-        const user = await this.repository.findOne({ email });
+        const repository = getCustomRepository(PostgresUserRepository)
+        const user = await repository.findOne({ email });
         return user;
     }
-    async save(data: User): Promise<User> {
-        const user = await this.repository.save(data);
+    async salvar(data: User): Promise<User> {
+        const repository = getCustomRepository(PostgresUserRepository)
+        const user = await repository.save(data);
         return user
     }
 }
