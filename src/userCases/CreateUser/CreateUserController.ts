@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import { CreateUserUserCase } from "./CreateUserUserCase";
 
-export class CreteUserController {
+export class CreateUserController {
     constructor(
         private createUserUseCase: CreateUserUserCase,
     ) {}

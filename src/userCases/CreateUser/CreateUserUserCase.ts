@@ -5,20 +5,23 @@ import { ICreateUser } from "./CreateUserDTO";
 
 export class CreateUserUserCase {
     constructor(
-      private   userRepository: IUsersRepository,
-      private   mailProvider: IMailprovaider,
-    ){}
-    async execute(data: ICreateUser): Promise<User>{
-        const user = await this.userRepository.findByEmail(data.email);
-        if(!user){
-            return await this.userRepository.save(user);
-        }
+        private userRepository: IUsersRepository,
+        private mailProvider: IMailprovaider,
+    ) { }
+    async execute(data: ICreateUser): Promise<User> {
+        const UserExist = await this.userRepository.findByEmail(data.email);
 
-        this.mailProvider.sendMail({
-            to:{
+        if (UserExist) {
+            return UserExist;
+        }
+        const user = await this.userRepository.create(data);
+        await this.userRepository.save(user);
+
+        await this.mailProvider.sendMail({
+            to: {
                 name: user.name,
                 email: user.email,
-            }, 
+            },
             from: {
                 name: "solid",
                 email: "solid@gmail.com",
