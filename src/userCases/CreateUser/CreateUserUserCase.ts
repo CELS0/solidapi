@@ -29,5 +29,6 @@ export class CreateUserUserCase {
             subject: 'Seja bem-vindo à plataforma',
             body: '<p>Você já pode fazer login em nossa plataforma.</p>'
           })
+          return user
         }
 }
