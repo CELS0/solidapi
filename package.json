@@ -6,7 +6,7 @@
   "author": "CELS0 <celsojr.300@gmail.com>",
   "scripts": {
     "dev": "tsnd --transpile-only --respawn --ignore-watch node_modules ./src/server.ts",
-    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js"
+    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   },
   "license": "MIT",
   "dependencies": {
