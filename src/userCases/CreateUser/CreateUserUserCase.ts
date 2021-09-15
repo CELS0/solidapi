@@ -12,7 +12,7 @@ export class CreateUserUserCase {
     const UserExist = await this.userRepository.findByEmail(data.email);
 
     if (UserExist) {
-      return UserExist;
+      throw new Error("User already exists");
     }
     const user = await this.userRepository.execute(data);
 
@@ -26,7 +26,7 @@ export class CreateUserUserCase {
         email: 'equipe@meuapp.com',
       },
       subject: 'Seja bem-vindo à plataforma',
-      body: '<p>Você já pode fazer login em nossa plataforma.</p>'
+      body: '<p>Você já pode fazer login em nossa plataforma G6.</p>'
     })
     return user
   }

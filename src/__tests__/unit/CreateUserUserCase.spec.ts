@@ -2,11 +2,18 @@ import { MailtrapMailProvider } from "../../providers/implementations/MailtrapMa
 import { UsersRepositoriesInMemory } from "../../repositories/In-Memory/UsersRepositoryInMemory";
 import { CreateUserUserCase } from "../../userCases/CreateUser/CreateUserUserCase";
 
+let usersRepositoriesInMemory: UsersRepositoriesInMemory;
+let mailtrapMailProvider: MailtrapMailProvider;
+let createUserUserCase: CreateUserUserCase;
+
 describe("Create user", () => {
+    beforeEach(() => {
+        usersRepositoriesInMemory = new UsersRepositoriesInMemory();
+        mailtrapMailProvider = new MailtrapMailProvider()
+        createUserUserCase = new CreateUserUserCase(usersRepositoriesInMemory, mailtrapMailProvider);
+    })
+
     it("Should be able to create a new user", async () => {
-        const usersRepositoriesInMemory = new UsersRepositoriesInMemory();
-        const mailtrapMailProvider = new MailtrapMailProvider()
-        const createUserUserCase = new CreateUserUserCase(usersRepositoriesInMemory,mailtrapMailProvider);
 
         const user = await createUserUserCase.execute({
             name: "test",
@@ -14,5 +21,19 @@ describe("Create user", () => {
             password: "123456"
         })
         expect(user).toHaveProperty("id");
+    })
+
+    it("Should not be able to create an existing user", async () => {
+        const user = {
+            name: "testExist",
+            email: "testExist@gmail.com",
+            password: "123456"
+        }
+
+        await createUserUserCase.execute(user);
+
+        await expect(createUserUserCase.execute(user)).rejects.toEqual(
+            new Error("User already exists")
+        )
     })
 })
